@@ -29,6 +29,7 @@ def btncmd():
 
     # 선택된 항목 확인 (위치로 반환 (ex) (1,2,3))
     # print("선택된 항목 : ", listbox.curselection())
+    pass
 
 btn = Button(root, text="클릭", command=btncmd)
 btn.pack()

@@ -1,8 +1,6 @@
 from tkinter import *
 import pygame
 
-
-
 root = Tk()
 root.title("Nado GUI")
 root.geometry("640x480+300+100")
@@ -16,6 +14,7 @@ chkbox.pack()
 chkvar2 = IntVar()
 chkbox2 = Checkbutton(root, text="일주일동안 보지 않기", variable=chkvar2)
 chkbox2.pack()
+
 
 def btncmd():
     print(chkvar.get())
