@@ -19,25 +19,25 @@ root.title("제목 없음 - Windows 메모장")
 # root.geometry("640x480") # 가로 x 세로 지정
 root.geometry("640x480") # 가로 x 세로 + x좌표 + y좌표
 
+filename = "mynote.txt"
+
 root.resizable(True, True) # x(너비), y(너비) 값 변경 불가 ( 창 크기 변경 불가 )
 
-def file_open():
-    f = open("mynote.txt", 'r')
+def open_file():
+    f = open_file("mynote.txt", 'r')
     text.delete("1.0",END)
     text.insert(END, f.read())
-def file_save():
-    f = open("mynote.txt", 'w')
+def save_file():
+    f = open_file("mynote.txt", 'w')
     f.write(text.get("1.0",END))
-
-frame = Frame(root)
-frame.pack()
 
 menu = Menu(root)
 
 # 파일 메뉴
 menu_file = Menu(menu, tearoff=0)
-menu_file.add_command(label="열기",command=file_open)
-menu_file.add_command(label="저장",command=file_save)
+menu_file.add_command(label="열기",command=open_file)
+menu_file.add_command(label="저장",command=save_file)
+menu_file.add_separator()
 menu_file.add_command(label="종료",command=root.quit)
 menu.add_cascade(label="파일", menu=menu_file)
 
@@ -50,20 +50,22 @@ menu.add_cascade(label="보기")
 # 도움말
 menu.add_cascade(label="도움말")
 
-
-
-# 스크롤 바
-scrollbar = Scrollbar(frame)
-scrollbar.pack(side="right",fill='y')
-
 # label = Label(root, text="메모장")
 # label.pack()
 
-text = Text(frame, width=640, height=480)
-text.pack(side="left")
 
-scrollbar.config(command="listbox.yview")
+# 스크롤 바
+scrollbar = Scrollbar(root)
+scrollbar.pack(side="right",fill='y')
+
+# text 지정
+text = Text(root, yscrollcommand=scrollbar.set) # 크기 지정하는거 유튜브 잘 보기
+text.pack(side="left",fill="both", expand=True)
+
+
 text.config(yscrollcommand=scrollbar.set)
+
+
 root.config(menu=menu)
 
 
