@@ -7,7 +7,7 @@ root.geometry("640x480+300+100")
 label1 = Label(root, text="안녕하세요")
 label1.pack()
 
-photo = PhotoImage(file = "C:/doit/gui_basic/img.png")
+photo = PhotoImage(file = "./gui_basic/img.png")
 label2 = Label(root, image=photo)
 label2.pack()
 
