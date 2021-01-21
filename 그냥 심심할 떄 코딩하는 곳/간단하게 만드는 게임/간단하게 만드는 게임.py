@@ -3,28 +3,57 @@ import os
 import sys
 import pygame
 
+class Enemy:
+    def __init__(self, money, hp):
+        self.money = money
+        self.hp = hp
+        print("enemy 객체가 호출되었습니다")
+class Zombie(Enemy):
+    def __init__(self, money, hp):
+        Enemy.__init__(self, money, hp)
+        print("Zombie 객체가 호출되었습니다")
+
+    def normal_zombie(self):
+        print("normal_zombie 객체가 호출되었습니다")
+                
 class Weapon:
-    pass
+    def __init__(self, money, damage):
+        self.money = money
+        self.money = damage
 
 class Sword(Weapon):
     def __init__(self, money, damage):
-        self.money = money
-        self.damage = damage
+        Weapon.__init__(self, money, damage)
+        print("Sward 클래스가 호출되었습니다")
 
     def wooden_sword(self):
+        self.money = 1000
+        self.damage = 4
         print("나무 검")
     def stone_sword(self):
+        self.money = 2000
+        self.damage = 5
         print("돌 검")  
     def iron_sword(self):
+        self.money = 4000
+        self.damage = 7
         print("철 검")
     def golden_sword(self):
+        self.money = 8000
+        self.damage = 9
         print("금 검")
     def diamond_sword(self):
+        self.money = 16000
+        self.damage = 11
         print("다이아몬드 검")
     def netherite_sword(self):
+        self.money = 32000
+        self.damage = 15
         print("네더라이트 검")
+
 sword = Sword(10,20)
-sword.iron_sword()
+zombie = Zombie(10,20)
+Zombie.normal_zombie
 # pygame.init()
 # root.geometry()
 
