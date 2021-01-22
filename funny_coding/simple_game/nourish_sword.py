@@ -5,13 +5,6 @@ import pygame
 import time
 import random
 
-def resource_path(relative_path):
-    try:
-        base_path = sys._MEIPASS
-    except Exception:
-        base_path = os.path.abspath(".")
-
-    return os.path.join(base_path, relative_path)
 class Zombie:
     def __init__(self, enemy_money, enemy_hp):
         print("Zombie 객체가 호출되었습니다")
@@ -68,10 +61,10 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("검 키우기") # 게임 이름
 
 # 배경 이미지 불러오기
-background = pygame.image.load(resource_path("C:/doit/funny_coding/simple_game/images/background.png"))
+background = pygame.image.load("C:/doit/funny_coding/simple_game/images/background.png")
 
 # 적 enemy 캐릭터
-enemy = pygame.image.load(resource_path("C:/doit/funny_coding/simple_game/images/normal_zombie.png"))
+enemy = pygame.image.load("C:/doit/funny_coding/simple_game/images/normal_zombie.png")
 enemy_size = enemy.get_rect().size # 이미지의 크기를 구해옴
 enemy_width = enemy_size[0] # 캐릭터의 가로 크기
 enemy_height = enemy_size[1] # 캐릭터의 세로 크기
@@ -96,7 +89,7 @@ wooden_sword_speed = 0.6
 game_font = pygame.font.Font(None, 40) # 폰트 객체 생성 (폰트, 크기)
 
 
-wooden_sword = pygame.image.load(resource_path("C:/doit/funny_coding/simple_game/images/wooden_sword.png"))
+wooden_sword = pygame.image.load("C:/doit/funny_coding/simple_game/images/wooden_sword.png")
 wooden_sword_leaf = wooden_sword.get_rect()
 wooden_sword_size = wooden_sword.get_rect().size # 이미지의 크기를 구해옴
 wooden_sword_width = wooden_sword_size[0] # 캐릭터의 가로 크기
@@ -104,7 +97,7 @@ wooden_sword_height = wooden_sword_size[1] # 캐릭터의 세로 크기
 wooden_sword_x_pos = (screen_width-wooden_sword_width) / 2 # 화면 가로의 절반 크기에 해당하는 곳에 위치 (가로)
 wooden_sword_y_pos = screen_height - wooden_sword_height # 화면 세로 크기 가장 아래에 해당하는 곳에 위치 (세로)
 
-wooden_sword_attack = pygame.image.load(resource_path("C:/doit/funny_coding/simple_game/images/wooden_sword_attack.png"))
+wooden_sword_attack = pygame.image.load("C:/doit/funny_coding/simple_game/images/wooden_sword_attack.png")
 wooden_sword_attack_size = wooden_sword_attack.get_rect().size # 이미지의 크기를 구해옴
 wooden_sword_attack_width = wooden_sword_attack_size[0] # 캐릭터의 가로 크기
 wooden_sword_attack_height = wooden_sword_attack_size[1] # 캐릭터의 세로 크기
@@ -146,6 +139,7 @@ wooden_sword_attack_y_pos = wooden_sword_y_pos
 # netherite_sword_height = netherite_sword_size[1] # 캐릭터의 세로 크기
 # netherite_sword_x_pos = (screen_width-netherite_sword_width) / 2 # 화면 가로의 절반 크기에 해당하는 곳에 위치 (가로)
 # netherite_sword_y_pos = screen_height - netherite_sword_height # 화면 세로 크기 가장 아래에 해당하는 곳에 위치 (세로)
+
 running = True
 
 to_x = 0
@@ -196,7 +190,7 @@ while running:
             elif event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                 to_y = 0
             elif event.key == pygame.K_SPACE:
-                wooden_sword = pygame.image.load(resource_path("C:/doit/funny_coding/simple_game/images/wooden_sword.png"))
+                wooden_sword = pygame.image.load("C:/doit/funny_coding/simple_game/images/wooden_sword.png")
                 # pygame.display.update() # 게임 화면을 다시 그리기
                 print("wooden_sword 객체를 다시 소환했습니다")
                 
