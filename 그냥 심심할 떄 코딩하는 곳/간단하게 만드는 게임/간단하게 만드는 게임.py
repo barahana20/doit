@@ -2,7 +2,7 @@ from tkinter import *
 import os
 import sys
 import pygame
-
+import time
 class Enemy:
     def __init__(self, money, hp):
         self.money = money
@@ -23,8 +23,8 @@ class Weapon:
         self.speed = speed
 
 class Sword(Weapon):
-    def __init__(self, money, damage, speed):
-        Weapon.__init__(self, money, damage)
+    def __init__(self):
+        Weapon.__init__(self, money, damage, speed)
         print("Sward 클래스가 호출되었습니다")
 
     def wooden_sword(self):
@@ -54,33 +54,9 @@ class Sword(Weapon):
     def attack_effect(self):
         pass
 
-    def blitRotate(surf, image, pos, originPos, angle):
-
-    # calcaulate the axis aligned bounding box of the rotated image
-        w, h       = image.get_size()
-        box        = [pygame.math.Vector2(p) for p in [(0, 0), (w, 0), (w, -h), (0, -h)]]
-        box_rotate = [p.rotate(angle) for p in box]
-        min_box    = (min(box_rotate, key=lambda p: p[0])[0], min(box_rotate, key=lambda p: p[1])[1])
-        max_box    = (max(box_rotate, key=lambda p: p[0])[0], max(box_rotate, key=lambda p: p[1])[1])
-
-        # calculate the translation of the pivot 
-        pivot        = pygame.math.Vector2(originPos[0], -originPos[1])
-        pivot_rotate = pivot.rotate(angle)
-        pivot_move   = pivot_rotate - pivot
-
-        # calculate the upper left origin of the rotated image
-        origin = (pos[0] - originPos[0] + min_box[0] - pivot_move[0], pos[1] - originPos[1] - max_box[1] + pivot_move[1])
-
-        # get a rotated image
-        rotated_image = pygame.transform.rotate(image, angle)
-
-        # rotate and blit the image
-        surf.blit(rotated_image, origin)
-
-
-# sword = Sword(10,20)
-# zombie = Zombie(10,20)
-# Zombie.normal_zombie
+sword = Sword
+zombie = Zombie(10,20)
+Zombie.normal_zombie
 
 pygame.init()
 
@@ -105,11 +81,20 @@ game_font = pygame.font.Font(None, 40) # 폰트 객체 생성 (폰트, 크기)
 
 
 wooden_sword = pygame.image.load("C:/doit/그냥 심심할 떄 코딩하는 곳/간단하게 만드는 게임/images/wooden_sword.png")
+wooden_sword_leaf = wooden_sword.get_rect()
 wooden_sword_size = wooden_sword.get_rect().size # 이미지의 크기를 구해옴
 wooden_sword_width = wooden_sword_size[0] # 캐릭터의 가로 크기
 wooden_sword_height = wooden_sword_size[1] # 캐릭터의 세로 크기
 wooden_sword_x_pos = (screen_width-wooden_sword_width) / 2 # 화면 가로의 절반 크기에 해당하는 곳에 위치 (가로)
 wooden_sword_y_pos = screen_height - wooden_sword_height # 화면 세로 크기 가장 아래에 해당하는 곳에 위치 (세로)
+
+wooden_sword_attack = pygame.image.load("C:/doit/그냥 심심할 떄 코딩하는 곳/간단하게 만드는 게임/images/wooden_sword_attack.png")
+wooden_sword_attack_size = wooden_sword_attack.get_rect().size # 이미지의 크기를 구해옴
+wooden_sword_attack_width = wooden_sword_attack_size[0] # 캐릭터의 가로 크기
+wooden_sword_attack_height = wooden_sword_attack_size[1] # 캐릭터의 세로 크기
+wooden_sword_attack_x_pos = wooden_sword_x_pos
+wooden_sword_attack_y_pos = wooden_sword_y_pos
+
 
 iron_sword = pygame.image.load("C:/doit/그냥 심심할 떄 코딩하는 곳/간단하게 만드는 게임/images/iron_sword.png")
 iron_sword_size = iron_sword.get_rect().size # 이미지의 크기를 구해옴
@@ -149,17 +134,13 @@ running = True
 
 to_x = 0
 to_y = 0
-angle = 0
-w, h = wooden_sword.get_size()
-
+transparent = (0, 0, 0, 0)
+wooden_sword_leaf_image = wooden_sword
 while running:
     dt = clock.tick(30) # 게임 화면의 초당 프레임 수를 설정
     for event in pygame.event.get(): # 어떤 이벤트가 발생하였는가?
         if event.type == pygame.QUIT: # 창이 닫히는 이벤트가 발생하였는가?
-             running = False # 게임이 진행중이 아님
-
-        pos = (screen.get_width()//2, screen.get_height()//2)
-        pos = (200, 200)
+            running = False # 게임이 진행중이 아님
 
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT: # 왼쪽
@@ -170,17 +151,23 @@ while running:
                 to_y -= wooden_sword_speed
             elif event.key == pygame.K_DOWN: # 아래쪽
                 to_y += wooden_sword_speed
-            elif event.key == pygame.K_SPACE: # 아래쪽
-                screen.blit(wooden_sword, (wooden_sword_x_pos, wooden_sword_y_pos))
+            elif event.key == pygame.K_SPACE: # 스페이스바_공격키
+                print("스페이스바를 눌렀습니다.")
+                # wooden_sword_leaf_image.fill(transparent)
+                screen.blit(wooden_sword_attack, (wooden_sword_x_pos, wooden_sword_y_pos))
+                pygame.display.update() # 게임 화면을 다시 그리기
+                time.sleep(0.05)
 
-                Sword.blitRotate(screen, wooden_sword, pos, (w//2, h//2), angle)
-                angle += 1
 
         if event.type == pygame.KEYUP: # 방향키를 뗴면 멈춤
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 to_x = 0
-            elif event. key == pygame.K_UP or event.key == pygame.K_DOWN:
+            elif event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                 to_y = 0
+            elif event.key == pygame.K_SPACE:
+                screen.blit(wooden_sword, (wooden_sword_x_pos, wooden_sword_y_pos))
+                pygame.display.update() # 게임 화면을 다시 그리기
+                continue
                 
     wooden_sword_x_pos += to_x * dt
     wooden_sword_y_pos += to_y * dt
@@ -198,12 +185,7 @@ while running:
         wooden_sword_y_pos = screen_height - wooden_sword_height
     screen.blit(background,(0,0)) # 배경 그리기
 
-    
-
-   
-
-    pygame.display.flip()
-
+    screen.blit(wooden_sword, (wooden_sword_x_pos, wooden_sword_y_pos))
 
     pygame.display.update() # 게임 화면을 다시 그리기
 
