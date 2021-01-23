@@ -267,7 +267,7 @@ while running:
                 iron_sword_ruuning_IfTrue_attack()
                 golden_sword_ruuning_IfTrue_attack()
                 
-                pygame.display.update() # 게임 화면을 다시 그리기
+                # pygame.display.update() # 게임 화면을 다시 그리기
                 
                 # wooden_sword의 충돌 체크
                 if wooden_sword_rect_running == True:
@@ -293,8 +293,8 @@ while running:
                         enemy_hp = enemy_hp - int(golden_sword1.golden_sword(0,0)[1]) - 20
                     
                 enemy_update = False  # 이걸 해야 enemy를 화면에 다시 그릴 수 있음.
-
                 time.sleep(0.05)
+                
 
         if event.type == pygame.KEYUP: # 방향키를 뗴면 멈춤
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
