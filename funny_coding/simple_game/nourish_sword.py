@@ -27,15 +27,14 @@ class Sword:
         self.x_pos = x_pos
         self.y_pos = y_pos
     # 여기서 money와 damage를 수정하는게 트루정보이다.
-    def sword_generate(self, sword):
-        self.money = 1000
+    def sword_generate(self, sword, money):
         sword = pygame.image.load("resources/{0}.png".format(sword))
         sword_size = sword.get_rect().size # 이미지의 크기를 구해옴
         sword_width = sword_size[0] # 캐릭터의 가로 크기
         sword_height = sword_size[1] # 캐릭터의 세로 크기
         self.x_pos = (screen_width - sword_width) / 2 # 화면 가로의 절반 크기에 해당하는 곳에 위치 (가로)
         self.y_pos = screen_height - sword_height # 화면 세로 크기 가장 아래에 해당하는 곳에 위치 (세로)
-        return (sword_width, sword_height, self.x_pos, self.y_pos, sword, self.money)
+        return (sword_width, sword_height, self.x_pos, self.y_pos, sword, money)
         # [0]:가로, [1]: 세로 [2]:x좌표 [3]:y좌표 [4]:검 사진값 반환 [5]:돈
 
     def sword_attack_generate(self, sword_attack, damage):
@@ -70,19 +69,6 @@ class Sword:
         self.damage = 300
         return (self.money, self.damage)
 
-        # 백업
-        # global wooden_sword_attack_rect
-        # global wooden_sword_attack
-        # global wooden_sword_attack_width
-        # global wooden_sword_attack_height
-        # global sword_attack_x_pos
-        # global sword_attack_y_pos
-        # wooden_sword_attack = pygame.image.load("resources/wooden_sword_attack.png")
-        # wooden_sword_attack_size = wooden_sword_attack.get_rect().size # 이미지의 크기를 구해옴
-        # wooden_sword_attack_width = wooden_sword_attack_size[0] # 캐릭터의 가로 크기
-        # wooden_sword_attack_height = wooden_sword_attack_size[1] # 캐릭터의 세로 크기
-        # sword_attack_x_pos = x_pos
-        # sword_attack_y_pos = y_pos
 # class Return_money:
 #     pass
 # class Return_damage(Sword):
@@ -126,11 +112,40 @@ def check_collision():
                 enemy_update = True
                 # enemy_x_pos, enemy_y_pos = random_appear()
                 enemy_hp -= int(sword_attack_dic.get(sword_attack_name)[5])
+    
 # 어떤 sword 객체가 나올지 결정하는 함수
 def determine_sword_object():
     for sword_name, sword_attack_name in zip(sword_list ,sword_attack_list):
         if sword_attack_running_dic.get(sword_attack_name) == True:
             screen.blit(sword_dic.get(sword_name)[4], (sword_x_pos, sword_y_pos))
+
+def enemy_cnt_running_onoff(enemy_cnt):
+    if enemy_cnt == 1:
+        sword_attack_dic.get(WOODEN_SWORD_ATTACK)[4].fill(transparent)
+        sword_attack_running_dic[WOODEN_SWORD_ATTACK], sword_attack_rect_running_dic[WOODEN_SWORD_ATTACK_RUNNING_RECT] = False, False
+        sword_attack_running_dic[STONE_SWORD_ATTACK], sword_attack_rect_running_dic[STONE_SWORD_ATTACK_RUNNING_RECT] = True, True
+
+    elif enemy_cnt == 2:
+        sword_attack_dic.get(STONE_SWORD_ATTACK)[4].fill(transparent)
+        sword_attack_running_dic[STONE_SWORD_ATTACK], sword_attack_rect_running_dic[STONE_SWORD_ATTACK_RUNNING_RECT] = False, False
+        sword_attack_running_dic[IRON_SWORD_ATTACK], sword_attack_rect_running_dic[IRON_SWORD_ATTACK_RUNNING_RECT] = True, True
+        # stone_sword_running, sword_attack_rect_running_dic.get(STONE_SWORD_ATTACK_RUNNING_RECT) = False, False
+        # iron_sword_running, sword_attack_rect_running_dic.get(IRON_SWORD_ATTACK_RUNNING_RECT) = True, True
+    
+    elif enemy_cnt == 3:
+        sword_attack_dic.get(IRON_SWORD_ATTACK)[4].fill(transparent)
+        sword_attack_running_dic[IRON_SWORD_ATTACK], sword_attack_rect_running_dic[IRON_SWORD_ATTACK_RUNNING_RECT] = False, False
+        sword_attack_running_dic[GOLDEN_SWORD_ATTACK], sword_attack_rect_running_dic[GOLDEN_SWORD_ATTACK_RUNNING_RECT] = True, True
+
+    elif enemy_cnt == 4:
+        sword_attack_dic.get(GOLDEN_SWORD_ATTACK)[4].fill(transparent)
+        sword_attack_running_dic[GOLDEN_SWORD_ATTACK], sword_attack_rect_running_dic[GOLDEN_SWORD_ATTACK_RUNNING_RECT] = False, False
+        sword_attack_running_dic[DIAMOND_SWORD_ATTACK], sword_attack_rect_running_dic[DIAMOND_SWORD_ATTACK_RUNNING_RECT] = True, True
+    
+    elif enemy_cnt == 5:
+        sword_attack_dic.get(DIAMOND_SWORD_ATTACK)[4].fill(transparent)
+        sword_attack_running_dic[DIAMOND_SWORD_ATTACK], sword_attack_rect_running_dic[DIAMOND_SWORD_ATTACK_RUNNING_RECT] = False, False
+        sword_attack_running_dic[NETHERITE_SWORD_ATTACK], sword_attack_rect_running_dic[NETHERITE_SWORD_ATTACK_RUNNING_RECT] = True, True
 
 pygame.init()
 
@@ -168,6 +183,7 @@ to_y = 0
 transparent = (0, 0, 0, 0)
 enemy_update = False
 enemy_cnt = 0
+enemy_money = 0
 WHITE = (255,255,255)
 BLACK = (0,0,0)
 RED = (255,0,0)
@@ -184,73 +200,100 @@ WOODEN_SWORD = 'wooden_sword'
 STONE_SWORD = 'stone_sword'
 IRON_SWORD = 'iron_sword'
 GOLDEN_SWORD = 'golden_sword'
+DIAMOND_SWORD = 'diamond_sword'
+NETHERITE_SWORD = 'netherite_sword'
 
 WOODEN_SWORD_ATTACK = 'wooden_sword_attack'
 STONE_SWORD_ATTACK = 'stone_sword_attack'
 IRON_SWORD_ATTACK = 'iron_sword_attack'
 GOLDEN_SWORD_ATTACK = 'golden_sword_attack'
+DIAMOND_SWORD_ATTACK = 'diamond_sword_attack'
+NETHERITE_SWORD_ATTACK = 'netherite_sword_attack'
 
 WOODEN_SWORD_ATTACK_RECT = 'wooden_sword_attack_rect'
 STONE_SWORD_ATTACK_RECT = 'stone_sword_attack_rect'
 IRON_SWORD_ATTACK_RECT = 'iron_sword_attack_rect'
 GOLDEN_SWORD_ATTACK_RECT = 'golden_sword_attack_rect'
+DIAMOND_SWORD_ATTACK_RECT = 'diamond_sword_attack_rect'
+NETHERITE_SWORD_ATTACK_RECT = 'netherite_sword_attack_rect'
 
 WOODEN_SWORD_ATTACK_RUNNING_RECT = 'wooden_sword_attack_running_rect'
 STONE_SWORD_ATTACK_RUNNING_RECT = 'stone_sword_attack_running_rect'
 IRON_SWORD_ATTACK_RUNNING_RECT = 'iron_sword_attack_running_rect'
 GOLDEN_SWORD_ATTACK_RUNNING_RECT = 'golden_sword_attack_running_rect'
+DIAMOND_SWORD_ATTACK_RUNNING_RECT = 'diamond_sword_attack_running_rect'
+NETHERITE_SWORD_ATTACK_RUNNING_RECT = 'netherite_sword_attack_running_rect'
 
-sword_attack_rect_dic_list = []
-sword_attack_rect_dic_list.append(WOODEN_SWORD_ATTACK_RECT)
-sword_attack_rect_dic_list.append(STONE_SWORD_ATTACK_RECT)
-sword_attack_rect_dic_list.append(IRON_SWORD_ATTACK_RECT)
-sword_attack_rect_dic_list.append(GOLDEN_SWORD_ATTACK_RECT)
+
 
 WOODEN_SWORD_ATTACK_DAMAGE = 40
 STONE_SWORD_ATTACK_DAMAGE = 80
 IRON_SWORD_ATTACK_DAMAGE = 120
 GOLDEN_SWORD_ATTACK_DAMAGE = 160
+DIAMOND_SWORD_ATTACK_DAMAGE = 200
+NETHERITE_SWORD_ATTACK_DAMAGE = 200
 
-sword_attack_list = []       
-sword_attack_list.append(WOODEN_SWORD_ATTACK)
-sword_attack_list.append(STONE_SWORD_ATTACK)
-sword_attack_list.append(IRON_SWORD_ATTACK)
-sword_attack_list.append(GOLDEN_SWORD_ATTACK)
+WOODEN_SWORD_MONEY = 1000
+STONE_SWORD_MONEY = 2000
+IRON_SWORD_MONEY = 4000
+GOLDEN_SWORD_MONEY = 8000
+DIAMOND_SWORD_MONEY = 16000
+NETHERITE_SWORD_MONEY = 20000
 
-sword_list = []
-sword_list.append(WOODEN_SWORD)
-sword_list.append(STONE_SWORD)
-sword_list.append(IRON_SWORD)
-sword_list.append(GOLDEN_SWORD)
 
-sword_dic = {WOODEN_SWORD:list(total_sword.sword_generate(WOODEN_SWORD)), \
-             STONE_SWORD:list(total_sword.sword_generate(STONE_SWORD)), \
-             IRON_SWORD:list(total_sword.sword_generate(IRON_SWORD)), \
-             GOLDEN_SWORD:list(total_sword.sword_generate(GOLDEN_SWORD))
+
+sword_dic = {WOODEN_SWORD:list(total_sword.sword_generate(WOODEN_SWORD,WOODEN_SWORD_MONEY)), \
+             STONE_SWORD:list(total_sword.sword_generate(STONE_SWORD,STONE_SWORD_MONEY)), \
+             IRON_SWORD:list(total_sword.sword_generate(IRON_SWORD,IRON_SWORD_MONEY)), \
+             GOLDEN_SWORD:list(total_sword.sword_generate(GOLDEN_SWORD,GOLDEN_SWORD_MONEY)), \
+             DIAMOND_SWORD:list(total_sword.sword_generate(DIAMOND_SWORD,DIAMOND_SWORD_MONEY)), \
+             NETHERITE_SWORD:list(total_sword.sword_generate(NETHERITE_SWORD,NETHERITE_SWORD_MONEY))
             }
+
 sword_attack_dic = { WOODEN_SWORD_ATTACK:list(total_sword.sword_attack_generate(WOODEN_SWORD_ATTACK,WOODEN_SWORD_ATTACK_DAMAGE)), \
                      STONE_SWORD_ATTACK:list(total_sword.sword_attack_generate(STONE_SWORD_ATTACK, STONE_SWORD_ATTACK_DAMAGE)), \
                      IRON_SWORD_ATTACK:list(total_sword.sword_attack_generate(IRON_SWORD_ATTACK, IRON_SWORD_ATTACK_DAMAGE)), \
-                     GOLDEN_SWORD_ATTACK:list(total_sword.sword_attack_generate(GOLDEN_SWORD_ATTACK, GOLDEN_SWORD_ATTACK_DAMAGE))
+                     GOLDEN_SWORD_ATTACK:list(total_sword.sword_attack_generate(GOLDEN_SWORD_ATTACK, GOLDEN_SWORD_ATTACK_DAMAGE)), \
+                     DIAMOND_SWORD_ATTACK:list(total_sword.sword_attack_generate(DIAMOND_SWORD_ATTACK, DIAMOND_SWORD_ATTACK_DAMAGE)), \
+                     NETHERITE_SWORD_ATTACK:list(total_sword.sword_attack_generate(NETHERITE_SWORD_ATTACK, NETHERITE_SWORD_ATTACK_DAMAGE))
                     }
 
 sword_attack_rect_dic = { WOODEN_SWORD_ATTACK_RECT:sword_attack_dic.get(WOODEN_SWORD_ATTACK)[4].get_rect(), \
                           STONE_SWORD_ATTACK_RECT:sword_attack_dic.get(STONE_SWORD_ATTACK)[4].get_rect(), \
                           IRON_SWORD_ATTACK_RECT:sword_attack_dic.get(IRON_SWORD_ATTACK)[4].get_rect(), \
-                          GOLDEN_SWORD_ATTACK_RECT:sword_attack_dic.get(GOLDEN_SWORD_ATTACK)[4].get_rect()
+                          GOLDEN_SWORD_ATTACK_RECT:sword_attack_dic.get(GOLDEN_SWORD_ATTACK)[4].get_rect(), \
+                          DIAMOND_SWORD_ATTACK_RECT:sword_attack_dic.get(DIAMOND_SWORD_ATTACK)[4].get_rect(), \
+                          NETHERITE_SWORD_ATTACK_RECT:sword_attack_dic.get(NETHERITE_SWORD_ATTACK)[4].get_rect()
                         }
 
 sword_attack_running_dic = { WOODEN_SWORD_ATTACK:True, \
                              STONE_SWORD_ATTACK:False, \
                              IRON_SWORD_ATTACK:False, \
-                             GOLDEN_SWORD_ATTACK:False
+                             GOLDEN_SWORD_ATTACK:False, \
+                             DIAMOND_SWORD_ATTACK:False, \
+                             NETHERITE_SWORD_ATTACK:False
                            }
 
 sword_attack_rect_running_dic = { WOODEN_SWORD_ATTACK_RUNNING_RECT:True, \
                                   STONE_SWORD_ATTACK_RUNNING_RECT:False, \
                                   IRON_SWORD_ATTACK_RUNNING_RECT:False, \
-                                  GOLDEN_SWORD_ATTACK_RUNNING_RECT:False
+                                  GOLDEN_SWORD_ATTACK_RUNNING_RECT:False, \
+                                  DIAMOND_SWORD_ATTACK_RUNNING_RECT:False, \
+                                  NETHERITE_SWORD_ATTACK_RUNNING_RECT:False
                                 }
+
+sword_list = []
+for items in list(sword_dic.keys()):
+    sword_list.append(items)
+
+sword_attack_list = []       
+for items in list(sword_attack_dic.keys()):
+    sword_attack_list.append(items)
+
+sword_attack_rect_dic_list = []
+for items in list(sword_attack_rect_dic.keys()):
+    sword_attack_rect_dic_list.append(items)
+
 
 sword_x_pos = sword_dic.get(WOODEN_SWORD)[2]
 sword_y_pos = sword_dic.get(WOODEN_SWORD)[3]
@@ -263,8 +306,6 @@ sword_attack_rect_running = True
 while running:
     dt = clock.tick(100) # 게임 화면의 초당 프레임 수를 설정
     screen.fill(BLACK)
-
-    # hp_bar()
 
     # 충돌 처리를 위한 enemy의 rect 정보 업데이트
     enemy_rect = enemy.get_rect()
@@ -333,45 +374,33 @@ while running:
     if enemy_hp <= 0:
         enemy_hp = original_enemy_hp
         enemy_cnt += 1
+        for sword_attack_name, sword_name in zip(sword_attack_list, sword_list):
+            if sword_attack_running_dic.get(sword_attack_name) == True:
+                enemy_money += sword_dic.get(sword_name)[5]
+                print(enemy_money)
+        enemy_x_pos, enemy_y_pos = random_appear()
         enemy_update == False
     
     # enemy_update가 False 일 때 enemy를 화면에 다시 그리기
     if enemy_update == False:
         screen.blit(enemy, (enemy_x_pos, enemy_y_pos))
-
-    if enemy_cnt == 1:
-        sword_attack_dic.get(WOODEN_SWORD_ATTACK)[4].fill(transparent)
-        sword_attack_running_dic[WOODEN_SWORD_ATTACK], sword_attack_rect_running_dic[WOODEN_SWORD_ATTACK_RUNNING_RECT] = False, False
-        # print(sword_attack_running_dic[WOODEN_SWORD_ATTACK], sword_attack_rect_running_dic[WOODEN_SWORD_ATTACK])
-        sword_attack_running_dic[STONE_SWORD_ATTACK], sword_attack_rect_running_dic[STONE_SWORD_ATTACK_RUNNING_RECT] = True, True
-        # 백업
-        # wooden_sword_running, wooden_sword_attack_rect_running = False, False
-        # stone_sword_running, sword_attack_rect_running_dic.get(STONE_SWORD_ATTACK_RUNNING_RECT) = True, True
         
-    elif enemy_cnt == 2:
-        sword_attack_dic.get(STONE_SWORD_ATTACK)[4].fill(transparent)
-        sword_attack_running_dic[STONE_SWORD_ATTACK], sword_attack_rect_running_dic[STONE_SWORD_ATTACK_RUNNING_RECT] = False, False
-        sword_attack_running_dic[IRON_SWORD_ATTACK], sword_attack_rect_running_dic[IRON_SWORD_ATTACK_RUNNING_RECT] = True, True
-        # stone_sword_running, sword_attack_rect_running_dic.get(STONE_SWORD_ATTACK_RUNNING_RECT) = False, False
-        # iron_sword_running, sword_attack_rect_running_dic.get(IRON_SWORD_ATTACK_RUNNING_RECT) = True, True
-    
-    elif enemy_cnt == 3:
-        sword_attack_dic.get(IRON_SWORD_ATTACK)[4].fill(transparent)
-        sword_attack_running_dic[IRON_SWORD_ATTACK], sword_attack_rect_running_dic[IRON_SWORD_ATTACK_RUNNING_RECT] = False, False
-        sword_attack_running_dic[GOLDEN_SWORD_ATTACK], sword_attack_rect_running_dic[GOLDEN_SWORD_ATTACK_RUNNING_RECT] = True, True
-    
+    enemy_cnt_running_onoff(enemy_cnt)
 
     enemy1.hp_bar() # hp 바 생성
 
     determine_sword_object() # 어떤 sword 객체가 나올지 결정하는 함수
 
-    kill_enemy_cnt = "kill : " + str(enemy_cnt)
+    msg_enemy_money = "money : " + str(enemy_money)
+    msg_enemy_cnt = "kill : " + str(enemy_cnt)
+
     # 게임 오버 메시지
-    msg = game_font.render(kill_enemy_cnt, True, RED) # 빨간색
-    msg_rect = msg.get_rect(center=(40,20))
-    screen.blit(msg, msg_rect)
-    # print(sword_attack_x_pos)
-    # print(sword_y_pos)
+    msg1 = game_font.render(msg_enemy_cnt, True, RED) # 빨간색
+    msg2 = game_font.render(msg_enemy_money, True, WHITE) # 흰색
+    msg1_rect = msg1.get_rect(center=(40,20))
+    msg2_rect = msg2.get_rect(center=(screen_width-100,20))
+    screen.blit(msg1, msg1_rect)
+    screen.blit(msg2, msg2_rect)
     pygame.display.update() # 게임 화면을 다시 그리기
 
 pygame.quit()
