@@ -3,7 +3,7 @@ import sys
 import pygame
 import time
 import random
-import inventory as inven
+from tkinter import *
 
 class Enemy: 
     def __init__(self):
@@ -127,11 +127,13 @@ def enemy_cnt_running_onoff(enemy_cnt):
         sword_attack_running_dic[DIAMOND_SWORD_ATTACK], sword_attack_rect_running_dic[DIAMOND_SWORD_ATTACK_RUNNING_RECT] = False, False
         sword_attack_running_dic[NETHERITE_SWORD_ATTACK], sword_attack_rect_running_dic[NETHERITE_SWORD_ATTACK_RUNNING_RECT] = True, True
 
-def print_msg(width, height, color):
-    msg = game_font.render(msg_enemy_cnt, True, color) # 빨간색
+def print_msg(cnt,width, height, color):
+    msg = game_font.render(cnt, True, color) # 빨간색
     msg_rect = msg.get_rect(center=(width,height))
     
     screen.blit(msg, msg_rect)
+
+
 def pause_msg(PAUSE, color):
     msg = pause_font.render(PAUSE, True, color) # 검은색
     width = (screen_width // 2)
@@ -139,6 +141,28 @@ def pause_msg(PAUSE, color):
     msg_rect = msg.get_rect(center=(width,height))
     screen.blit(msg, msg_rect)
     pygame.display.update()
+
+def btn1_command():
+    print("dd")
+
+
+def inventory():
+   root = Tk()
+   root.title("INVENTORY")
+   # root.geometry("640x480") # 가로 x 세로 지정
+   root.geometry("320x480") # 가로 x 세로 + x좌표 + y좌표
+   root.resizable(True, False) # x(너비), y(너비) 값 변경 불가 ( 창 크기 변경 불가 )
+
+   label1 = Label(root, text="안녕하세요")
+   label1.pack(side='left')
+
+
+   btn1 = Button(root, padx=10, pady=5, text="버튼3", command=btn1_command) # 버튼 크기 유동성
+   btn1.pack(side='right')
+
+
+   root.mainloop()
+
 
 pygame.init()
 
@@ -328,15 +352,17 @@ while running:
 
                 enemy_update = False  # 이걸 해야 enemy를 화면에 다시 그릴 수 있음.
                 # time.sleep(0.05)
-            elif event.key == pygame.K_a:
+            elif event.key == pygame.K_i:
                 pause_msg('Pause', WHITE)
-                inven.aa() # inventory 띄우기
+                inventory() # inventory 띄우기
                 
         if event.type == pygame.KEYUP: # 방향키를 뗴면 멈춤
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT: to_x = 0
             elif event.key == pygame.K_UP or event.key == pygame.K_DOWN: to_y = 0
             elif event.key == pygame.K_SPACE:
                 detach_spacebar(sword_attack_running_dic)
+            elif event.key == pygame.K_a: pass
+                
     
     # 현재 활성화된 sword_attack_running에 따라 그에 상응하는 rect 생성
     for sword_attack_rect_name, sword_name in zip(sword_attack_rect_dic_list, sword_attack_list):
@@ -390,8 +416,8 @@ while running:
     msg_enemy_cnt = "kill : " + str(enemy_cnt)
 
     # 게임 오버 메시지
-    print_msg(40,20,RED)
-    print_msg(screen_width-100,20,WHITE)
+    print_msg(msg_enemy_cnt,40,20,RED)
+    print_msg(msg_enemy_money,screen_width-100,20,WHITE)
 
 
     pygame.display.update() # 게임 화면을 다시 그리기
