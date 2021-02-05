@@ -142,9 +142,9 @@ def pause_msg(PAUSE, color):
     screen.blit(msg, msg_rect)
     pygame.display.update()
 
+
 def btn1_command():
     print("dd")
-
 
 def inventory():
    root = Tk()
