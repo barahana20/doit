@@ -4,6 +4,7 @@ import sys
 import pygame
 import time
 import random
+
 class Enemy:
     def __init__(self):
         pass

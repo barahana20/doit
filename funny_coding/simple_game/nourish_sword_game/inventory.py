@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*- 
 from tkinter import *
 
 def btn1_command():
