@@ -162,7 +162,7 @@ def inventory():
    btn1.pack(side='right')
 
 
-   root.mainloop()
+   root.mainloop()  
 
 
 pygame.init()
@@ -362,7 +362,7 @@ while running:
             elif event.key == pygame.K_UP or event.key == pygame.K_DOWN: to_y = 0
             elif event.key == pygame.K_SPACE:
                 detach_spacebar(sword_attack_running_dic)
-            elif event.key == pygame.K_a: pass
+            elif event.key == pygame.K_i: pass
                 
     
     # 현재 활성화된 sword_attack_running에 따라 그에 상응하는 rect 생성
