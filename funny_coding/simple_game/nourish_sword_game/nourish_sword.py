@@ -6,6 +6,7 @@ import time
 import random
 from tkinter import *
 
+
 class Enemy: 
     def __init__(self):
         pass
@@ -78,7 +79,7 @@ def detach_spacebar(sword_attack_running_dic):
 def sword_running_IfTrue_attack():
     for sword_attack_name, sword_name in zip(sword_attack_list, sword_list):
         if sword_attack_running_dic.get(sword_attack_name) == True:
-            sword_attack_dic.get(sword_attack_name)[4].fill(transparent)
+            #sword_attack_dic.get(sword_name)[4].fill(transparent)
             screen.blit(sword_attack_dic.get(sword_attack_name)[4], (sword_x_pos, sword_y_pos)) 
 # 충돌 체크 함수
 def check_collision():
@@ -147,8 +148,9 @@ def pause_msg(PAUSE, color):
 def btn1_command():
     print("dd")
 
+root = Tk() # 버그 발견, 이 코드를 inventory 함수 바깥에 적어야함.
 def inventory():
-   root = Tk()
+   
    root.title("INVENTORY")
    # root.geometry("640x480") # 가로 x 세로 지정
    root.geometry("320x480") # 가로 x 세로 + x좌표 + y좌표
@@ -162,7 +164,7 @@ def inventory():
    btn1.pack(side='right')
 
 
-   root.mainloop()  
+   root.mainloop()
 
 
 pygame.init()
