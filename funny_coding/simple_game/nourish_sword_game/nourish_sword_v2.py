@@ -200,7 +200,7 @@ def inventory():
     root.geometry("640x480") # 가로 x 세로 지정
     #root.geometry("320x480") # 가로 x 세로 + x좌표 + y좌표
     root.resizable(True, False) # x(너비), y(너비) 값 변경 불가 ( 창 크기 변경 불가 )
-
+    
     btn1 = Button(root, padx=10, pady=5, text="돌칼구입(10000원)", command=enemy_money_running_onoff()) # 버튼 크기 유동성
     btn1.pack()
 
@@ -217,6 +217,7 @@ def inventory():
     btn5.pack()
 
     root.mainloop()
+    
 
 WOODEN_SWORD_MONEY = 1000
 STONE_SWORD_MONEY = 2000
@@ -313,7 +314,7 @@ GOLDEN_SWORD_ATTACK_DAMAGE = 70
 DIAMOND_SWORD_ATTACK_DAMAGE = 90
 NETHERITE_SWORD_ATTACK_DAMAGE = 110
 
-WOODEN_SWORD_MONEY = 1000
+WOODEN_SWORD_MONEY = 10000
 STONE_SWORD_MONEY = 2000
 IRON_SWORD_MONEY = 4000
 GOLDEN_SWORD_MONEY = 8000
