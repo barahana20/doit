@@ -9,7 +9,9 @@ import pygame
 import time
 import random
 from tkinter import *
+from varname import nameof
 
+TK_SILENCE_DEPRECATION=1 
 
 class Enemy: 
     def __init__(self):
@@ -190,15 +192,14 @@ def pause_msg(PAUSE, color):
     screen.blit(msg, msg_rect)
     pygame.display.update()
 
-
 def btn_command():
     print("dd")
 
-root = Tk() # 버그 발견, 이 코드를 inventory 함수 바깥에 적어야함.
+root = Tk()
 def inventory():
     root.title("INVENTORY")
-    root.geometry("640x480") # 가로 x 세로 지정
-    #root.geometry("320x480") # 가로 x 세로 + x좌표 + y좌표
+    # root.geometry("640x480") # 가로 x 세로 지정
+    root.geometry("320x480") # 가로 x 세로 + x좌표 + y좌표
     root.resizable(True, False) # x(너비), y(너비) 값 변경 불가 ( 창 크기 변경 불가 )
     
     btn1 = Button(root, padx=10, pady=5, text="돌칼구입(10000원)", command=enemy_money_running_onoff()) # 버튼 크기 유동성
@@ -215,11 +216,11 @@ def inventory():
 
     btn5 = Button(root, padx=10, pady=5, text="네더라이트칼구입(160000원)", command=enemy_money_running_onoff())
     btn5.pack()
-
-    root.mainloop()
     
+    
+inventory_on_off = False
 
-WOODEN_SWORD_MONEY = 1000
+WOODEN_SWORD_MONEY = 5000
 STONE_SWORD_MONEY = 2000
 IRON_SWORD_MONEY = 4000
 GOLDEN_SWORD_MONEY = 8000
@@ -381,11 +382,12 @@ sword_attack_y_pos = sword_y_pos # 어차피 검 사진은 160x160 이므로 swo
 
 sword_running = sword_dic.get(WOODEN_SWORD)
 sword_attack_rect_running = True
+inventory()
 
 while running:
     dt = clock.tick(100) # 게임 화면의 초당 프레임 수를 설정
     screen.fill(BLACK)
-
+    
     # 충돌 처리를 위한 enemy의 rect 정보 업데이트
     enemy_rect = enemy.get_rect()
     enemy_rect.left = enemy_x_pos
@@ -416,8 +418,13 @@ while running:
                 enemy_update = False  # 이걸 해야 enemy를 화면에 다시 그릴 수 있음.
                 # time.sleep(0.05)
             elif event.key == pygame.K_i:
+                inventory_on_off = True
+            
+            if inventory_on_off == True:
                 pause_msg('Pause', WHITE)
-                inventory() # inventory 띄우기
+                inventory_on_off = False
+                root.update()
+
                 
         if event.type == pygame.KEYUP: # 방향키를 뗴면 멈춤
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT: to_x = 0
